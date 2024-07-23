@@ -1,0 +1,15 @@
+<mat-toolbar color="accent" class="mat-elevation-z3">
+  <a [routerLink]="['/offers']" routerLinkActive="active" *ngIf="loggedUser.role.roleName === 'ROLE_USER'">
+    <img
+      src="./assets/agency.png"
+      alt="MyHome"
+      class="app-icon" />
+  </a>
+  <a [routerLink]="['/psp/payment-method/subscribed']" routerLinkActive="active" *ngIf="loggedUser.role.roleName === 'ROLE_ADMIN'">
+    <img
+      src="./assets/agency.png"
+      alt="MyHome"
+      class="app-icon" />
+  </a>
+
+</mat-toolbar>
