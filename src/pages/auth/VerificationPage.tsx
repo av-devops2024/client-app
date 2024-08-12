@@ -1,6 +1,6 @@
 import React, { useState, useRef, ChangeEvent, FormEvent } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Box, TextField, Button, Typography, Alert } from '@mui/material';
+import { useNavigate, useParams } from 'react-router-dom';
+import { Box, TextField, Button, Typography, Alert, Snackbar } from '@mui/material';
 import { verify } from '../../services/authService';
 
 const Verification = () => {
@@ -8,6 +8,9 @@ const Verification = () => {
     const [error, setError] = useState('');
     const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
     const navigate = useNavigate();
+    const {id} = useParams();
+    const [openSnackbar, setOpenSnackbar] = useState(false);
+    const [message, setMessage] = useState("");
 
     const handleChange = (event: ChangeEvent<HTMLInputElement|HTMLTextAreaElement>, index: number) => {
         const { value } = event.target;
@@ -24,23 +27,18 @@ const Verification = () => {
 
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        setError('');
-        const data = new FormData(event.currentTarget);
         const request = {
-           verifyId: '',
+           verifyId: id ?? "",
            securityCode: code.join('')
         };
-    
-
-        try {
-            const response = await verify(request);
-            if (response.data.success) {
-                navigate('/success');
-            } else {
-                setError('Invalid verification code. Please try again.');
-            }
-        } catch (error) {
-            setError('An error occurred. Please try again.');
+        const isSucceed = await verify(request);
+        if(isSucceed){
+            setMessage("Verification successfully");
+            setOpenSnackbar(true);
+            navigate("/auth");
+        } else {
+            setMessage("An error occurred. Please try again.");
+            setOpenSnackbar(true);
         }
     };
 
@@ -50,33 +48,48 @@ const Verification = () => {
             flexDirection="column"
             alignItems="center"
             justifyContent="center"
-            minHeight="100vh"
+            height="60vh"  // Ensures the box takes the full height of the viewport
+            width="40%"
+            border="1px solid gray"
+            borderRadius={3}
+            mx="auto"
+            mt={15}
         >
-            <Typography variant="h4" gutterBottom>
+            <Typography variant="h4" gutterBottom marginBottom={5}>
                 Verify Your Account
             </Typography>
-            <Box component="form" onSubmit={handleSubmit} noValidate display="flex">
-                {code.map((digit, index) => (
-                    <TextField
-                        key={index}
-                        value={digit}
-                        onChange={(e) => handleChange(e, index)}
-                        inputRef={(el) => (inputRefs.current[index] = el)}
-                        variant="outlined"
-                        inputProps={{ maxLength: 1, style: { textAlign: 'center' } }}
-                        required
-                        sx={{ mx: 1, width: '50px' }}
-                    />
-                ))}
+            <Box component="form" onSubmit={handleSubmit} noValidate>
+                <Box display="flex" marginBottom={5}>
+                    {code.map((digit, index) => (
+                        <TextField
+                            key={index}
+                            value={digit}
+                            onChange={(e) => handleChange(e, index)}
+                            inputRef={(el) => (inputRefs.current[index] = el)}
+                            variant="outlined"
+                            inputProps={{ maxLength: 1, style: { textAlign: 'center' } }}
+                            required
+                            sx={{ mx: 1, width: '50px' }}
+                        />
+                    ))}
+                </Box>
+                <Box
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="center"
+                    marginTop={2}
+                >
+                    <Button type="submit" variant="contained" color="primary">
+                        Verify
+                    </Button>
+                </Box>
             </Box>
-            <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
-                Verify
-            </Button>
-            {error && (
-                <Alert severity="error" sx={{ mt: 2 }}>
-                    {error}
-                </Alert>
-            )}
+            <Snackbar
+                anchorOrigin={{vertical: 'bottom', horizontal: 'center'}}
+                open={openSnackbar}
+                onClose={() => setOpenSnackbar(false)}
+                message={message}
+            />
         </Box>
     );
 };

@@ -8,32 +8,31 @@ export const signUp = async (request: RegistrationRequest) => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(request),
+      body: JSON.stringify(request)
     });
-  
-    if (!response.ok) {
-      throw new Error('Sign-Up failed');
+    if(response.ok) {
+      return "";
+    } else {
+      const errorMessage = await response.text();
+      console.log(errorMessage);
+      return errorMessage;
     }
-  
-    const userData = await response.json();
-    return userData;
-  
 };
 
 export const verify = async (request: VerifyRequest) => {
-    const response = await fetch('/api/signup', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(request),
-      });
-    
-      if (!response.ok) {
-        throw new Error('Sign-Up failed');
-      }
-    
-      const userData = await response.json();
-      return userData;
+  const response = await fetch('http://localhost:8080/users/verify', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(request),
+    });
+  if(response.ok) {
+    return true;
+  } else {
+    console.log(await response.text());
+    return false;
+  }
+  
 }
   

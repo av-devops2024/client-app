@@ -9,11 +9,13 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import { Outlet } from 'react-router';
+import { useAuth } from '../../contexts/AuthContext';
 
 
 function Navbar() {
     const my_pages = [ 'Search' , 'Reservations', 'Accommodations', 'Ratings'];
     const my_settings = ['Profile', 'Account','Logout'];
+    const {user} = useAuth();
 
     const [anchorElUser, setAnchorElUser] = useState(null);
 
@@ -47,17 +49,19 @@ function Navbar() {
             >
               EReservation
             </Typography>
-            <Box sx={{flexWrap:'wrap',flexGrow: 1, display:'flex' }}>
-              {my_pages.map((page) => (
-                <Button
-                  // key={my_pages}
-                  sx={{ my: 2, color: 'white', display: 'block' }}
-                >
-                  {page}
-                </Button>
-              ))}
-            </Box>
-            <Box sx={{ flexGrow: 0 }}>
+            {user &&
+              <Box sx={{flexWrap:'wrap',flexGrow: 1, display:'flex' }}>
+                {my_pages.map((page) => (
+                  <Button
+                    // key={my_pages}
+                    sx={{ my: 2, color: 'white', display: 'block' }}
+                  >
+                    {page}
+                  </Button>
+                ))}
+              </Box>
+          }
+            {user && <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Open my_settings">
                 <IconButton onClick={handleOpenSettingsMenu} sx={{ p: 0 }}>
                   <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
@@ -81,6 +85,7 @@ function Navbar() {
                 ))}
               </Menu>
             </Box>
+          }
         </Toolbar>
       </AppBar>
       <Outlet/>

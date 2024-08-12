@@ -2,7 +2,7 @@ import React, { createContext, useState, useEffect, useContext } from 'react';
 
 interface AuthContextType {
   user: string | null;
-  login: (username: string, password: string) => Promise<void>;
+  login: (username: string, password: string) => Promise<string>;
   logout: () => void;
 }
 
@@ -19,7 +19,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   const login = async (username: string, password: string) => {
-
     const response = await fetch('http://localhost:8080/auth/login', {
       method: 'POST',
       headers: {
@@ -27,14 +26,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       },
       body: JSON.stringify({ username, password }),
     });
-
-    if (response.ok) {
+    if(response.ok) {
       const userData = await response.json();
-      sessionStorage.setItem('user', userData.username);
-      setUser(userData.username);
+      sessionStorage.setItem('user', JSON.stringify(userData.user));
+      sessionStorage.setItem('token', userData.token);
+      sessionStorage.setItem('email', userData.user.email);
+      setUser(userData);
+      return "";
     } else {
-      throw new Error('Login failed');
+      const errorMessage = await response.text();
+      return errorMessage;
     }
+    
   };
 
   const logout = () => {

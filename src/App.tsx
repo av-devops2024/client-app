@@ -6,6 +6,8 @@ import Navbar from './components/navbar/Navbar';
 import { Route, Routes } from 'react-router';
 import { BrowserRouter } from 'react-router-dom';
 import AuthPage from './pages/auth/AuthPage';
+import VerificationPage from './pages/auth/VerificationPage';
+import { AuthProvider } from './contexts/AuthContext';
 
 
 const App = () => {
@@ -13,13 +15,16 @@ const App = () => {
   console.log(theme.palette.secondary);
   return (
     <ThemeProvider theme={theme}>
+      <AuthProvider>
       <BrowserRouter>
         <Routes>
           <Route element={<Navbar/>}>
-            <Route path='/login' element={<AuthPage/>}/>
+            <Route path='/auth' element={<AuthPage/>}/>
+            <Route path='/verification/:id' element={<VerificationPage/>}/>
           </Route>
         </Routes>
       </BrowserRouter>
+      </AuthProvider>
     </ThemeProvider>
   );
 }
