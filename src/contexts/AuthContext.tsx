@@ -1,7 +1,9 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
+import User from '../model/user';
+import { useNavigate } from 'react-router';
 
 interface AuthContextType {
-  user: string | null;
+  user: User|null;
   login: (username: string, password: string) => Promise<string>;
   logout: () => void;
 }
@@ -9,12 +11,12 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<string | null>(null);
+  const [user, setUser] = useState<User|null>(null);
 
   useEffect(() => {
     const storedUser = sessionStorage.getItem('user');
     if (storedUser) {
-      setUser(storedUser);
+      setUser(JSON.parse(storedUser));
     }
   }, []);
 
@@ -31,7 +33,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       sessionStorage.setItem('user', JSON.stringify(userData.user));
       sessionStorage.setItem('token', userData.token);
       sessionStorage.setItem('email', userData.user.email);
-      setUser(userData);
+      setUser(userData.user);
       return "";
     } else {
       const errorMessage = await response.text();
@@ -42,6 +44,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const logout = () => {
     sessionStorage.removeItem('user');
+    sessionStorage.removeItem('token');
+    sessionStorage.removeItem('email');
     setUser(null);
   };
 

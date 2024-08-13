@@ -3,7 +3,7 @@ import { useState } from "react";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { signUp } from "../../services/authService";
-import { UnpackNestedValue, useForm } from "react-hook-form";
+import {useForm } from "react-hook-form";
 import { RegistrationRequest } from "../../requests/auth/RegistrationRequest";
 
 const SignUp = (props: SignUpProps) => {

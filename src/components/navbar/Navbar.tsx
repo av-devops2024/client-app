@@ -8,23 +8,29 @@ import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
-import { Outlet } from 'react-router';
+import { Outlet, useNavigate } from 'react-router';
 import { useAuth } from '../../contexts/AuthContext';
 
 
 function Navbar() {
     const my_pages = [ 'Search' , 'Reservations', 'Accommodations', 'Ratings'];
-    const my_settings = ['Profile', 'Account','Logout'];
-    const {user} = useAuth();
-
+    const my_settings = ['Edit Profile', 'Logout'];
+    const {user, logout} = useAuth();
+    const navigate = useNavigate();
     const [anchorElUser, setAnchorElUser] = useState(null);
 
     const handleOpenSettingsMenu = (event: any) => {
       setAnchorElUser(event.currentTarget);
     };
 
-    const handleCloseSettingsMenu = () => {
+    const handleClickSettingsMenuItem = (setting: string) => {
       setAnchorElUser(null);
+      if(setting === 'Edit Profile'){
+        navigate("/edit-profile");
+      } else {
+        logout();
+        navigate("/auth");
+      }
     };
 
 
@@ -32,12 +38,11 @@ function Navbar() {
       <>
       <AppBar position="static">
         <Toolbar>
-          {/* <StoreIcon></StoreIcon> */}
             <Typography
               variant="h5"
               noWrap
               component="a"
-              href="/"
+              href="/home"
               sx={{
                 mr: 2,
                 fontWeight: 200,
@@ -64,7 +69,7 @@ function Navbar() {
             {user && <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Open my_settings">
                 <IconButton onClick={handleOpenSettingsMenu} sx={{ p: 0 }}>
-                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                  <Avatar alt={user?.firstName} src="/static/images/avatar/2.jpg" />
                 </IconButton>
               </Tooltip>
               <Menu
@@ -76,10 +81,10 @@ function Navbar() {
                   horizontal: 'right',
                 }}
                 open={Boolean(anchorElUser)}
-                onClose={handleCloseSettingsMenu}
+                onClose={() => setAnchorElUser(null)}
               >
                 {my_settings.map((setting) => (
-                  <MenuItem key={setting} onClick={handleCloseSettingsMenu}>
+                  <MenuItem key={setting} onClick={() => handleClickSettingsMenuItem(setting)}>
                     <Typography textAlign="center">{setting}</Typography>
                   </MenuItem>
                 ))}
