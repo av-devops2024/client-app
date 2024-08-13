@@ -2,7 +2,6 @@ import { UpdateUserRequest } from "../requests/user/UpdateUserRequest";
 import { UpdatePasswordRequest } from "../requests/user/UpdatePasswordRequest";
 
 export const updateUser = async (request: UpdateUserRequest) => {
-    console.log(request);
     const response = await fetch('http://localhost:8080/users/edit-profile', {
         method: 'PUT',
         headers: {
