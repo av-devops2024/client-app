@@ -1,6 +1,5 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import User from '../model/user';
-import { useNavigate } from 'react-router';
 
 interface AuthContextType {
   user: User|null;
@@ -24,7 +23,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const response = await fetch('http://localhost:8080/auth/login', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({ username, password }),
     });
@@ -42,11 +41,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     
   };
 
-  const logout = () => {
-    sessionStorage.removeItem('user');
-    sessionStorage.removeItem('token');
-    sessionStorage.removeItem('email');
-    setUser(null);
+  const logout = async () => {
+    const token = sessionStorage.getItem('token');
+    const response = await fetch('http://localhost:8080/auth/logout', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token,
+      }
+    });
+    if(response.ok){
+      sessionStorage.removeItem('user');
+      sessionStorage.removeItem('token');
+      sessionStorage.removeItem('email');
+      setUser(null);
+    }
   };
 
   return (

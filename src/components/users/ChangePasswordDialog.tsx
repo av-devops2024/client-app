@@ -7,7 +7,7 @@ import { updatePassword } from "../../services/userService";
 import { UpdatePasswordRequest } from "../../requests/user/UpdatePasswordRequest";
 import { useAuth } from "../../contexts/AuthContext";
 
-const ChangePasswordDialog = (props: ChangePasswordDialogProps) => {
+const ChangePasswordDialog = (props: DialogProps) => {
     const [showPassword, setShowPassword] = useState(false);
     const [showNewPassword, setShowNewPassword] = useState(false);
     const {user} = useAuth();
@@ -22,7 +22,7 @@ const ChangePasswordDialog = (props: ChangePasswordDialogProps) => {
     };
 
     const onSubmit = async (data: any) => {
-        const responseMessage = await updatePassword({...data, id: user?.id} as UpdatePasswordRequest);
+        const responseMessage = await updatePassword(data as UpdatePasswordRequest);
         if(responseMessage === ""){
             setMessage("Your password is updated successfully.");
             reset(data);
@@ -166,7 +166,7 @@ const ChangePasswordDialog = (props: ChangePasswordDialogProps) => {
 };
 export default ChangePasswordDialog;
 
-interface ChangePasswordDialogProps {
+export interface DialogProps {
     open: boolean;
     setOpen: (value: boolean) => void;
 
