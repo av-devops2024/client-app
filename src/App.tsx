@@ -1,4 +1,3 @@
-
 import './App.css';
 import {ThemeProvider} from '@mui/material';
 import {getTheme} from './theme';
@@ -10,6 +9,7 @@ import VerificationPage from './pages/auth/VerificationPage';
 import HomePage from './pages/home/HomePage';
 import EditProfilePage from './pages/profile/EditProfilePage';
 import { AuthProvider } from './contexts/AuthContext';
+import React from 'react';
 
 
 const App = () => {

@@ -4,6 +4,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { useAuth } from "../../contexts/AuthContext";
 import { useNavigate } from "react-router";
+import React from "react";
 
 const SignIn = (props: SignInProps) => {
     const [showPassword, setShowPassword] = useState(false);
