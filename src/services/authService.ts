@@ -14,7 +14,6 @@ export const signUp = async (request: RegistrationRequest) => {
       return "";
     } else {
       const errorMessage = await response.text();
-      console.log(errorMessage);
       return errorMessage;
     }
 };
@@ -30,7 +29,6 @@ export const verify = async (request: VerifyRequest) => {
   if(response.ok) {
     return true;
   } else {
-    console.log(await response.text());
     return false;
   }
   

@@ -2,6 +2,7 @@ import { CssBaseline, Grid, Paper } from "@mui/material";
 import { useState } from "react";
 import SignIn from "../../components/auth/SignIn";
 import SignUp from "../../components/auth/SignUp";
+import React from "react";
 
 const AuthPage = () => {
   const [clickedRegister, setClickedRegister] = useState(false);

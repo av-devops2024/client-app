@@ -3,8 +3,9 @@ import { useState } from "react";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { signUp } from "../../services/authService";
-import { UnpackNestedValue, useForm } from "react-hook-form";
+import {useForm } from "react-hook-form";
 import { RegistrationRequest } from "../../requests/auth/RegistrationRequest";
+import React from "react";
 
 const SignUp = (props: SignUpProps) => {
     const [showPassword, setShowPassword] = useState(false);
@@ -12,7 +13,6 @@ const SignUp = (props: SignUpProps) => {
     const [clickedRegister, setClickedRegister] = useState(false);
     const [message, setMessage] = useState("");
     const { register, handleSubmit, getValues, formState: { errors } } = useForm();
-    // const {navigate} = useNavigate();
     const onSubmit = async (data: any) => {
         setClickedRegister(true);
         const responseMessage = await signUp(data as RegistrationRequest);
