@@ -10,6 +10,8 @@ import VerificationPage from './pages/auth/VerificationPage';
 import HomePage from './pages/home/HomePage';
 import EditProfilePage from './pages/profile/EditProfilePage';
 import { AuthProvider } from './contexts/AuthContext';
+import AccommodationsPage from './pages/accommodations/AccommodationsPage';
+import CreateAccommodationPage from './pages/accommodations/CreateAccommodationPage';
 
 
 const App = () => {
@@ -24,6 +26,8 @@ const App = () => {
             <Route path='/verification/:id' element={<VerificationPage/>}/>
             <Route path='/home' element={<HomePage/>}/>
             <Route path='/edit-profile' element={<EditProfilePage/>}/>
+            <Route path='/my-accommodations' element={<AccommodationsPage/>}/>
+            <Route path='/create-accommodation' element={<CreateAccommodationPage/>}/>
           </Route>
         </Routes>
       </BrowserRouter>
