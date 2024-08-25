@@ -8,17 +8,17 @@ export const THEMES = {
   MFW_DARK: "MFW_DARK",
 };
 
-const swatches = {
-    primary: "#F7931E", // trebalo bi kod nas zelena, "#FF4800"
-    secondary: "#E7FD02",//kod nas plava, "#E7FD02",
+export const swatches = {
+    primary: "#F7931E", 
+    secondary: "#E7FD02",
     warning: '', 
     
     gray:{
-      100: "#6b6b6b",//nijanse sive:, "#CCD3FF"
+      100: "#6b6b6b",
       200: "#242424",
       300: "#242424",
-      400: "#333333",//"#0005DF",
-      500: "#242424",//"#000140",
+      400: "#333333",
+      500: "#242424",
     },
     text: {
       primary: "#1b1b1b",

@@ -13,7 +13,7 @@ import { useAuth } from '../../contexts/AuthContext';
 
 
 function Navbar() {
-    const my_pages = [ 'Search' , 'Reservations', 'Accommodations', 'Ratings'];
+    const my_pages = {'search': 'Search' , 'my-reservations': 'My Reservations', 'my-accommodations': 'My Accommodations', 'my-ratings': 'My Ratings'};
     const my_settings = ['Edit Profile', 'Logout'];
     const {user, logout} = useAuth();
     const navigate = useNavigate();
@@ -56,12 +56,13 @@ function Navbar() {
             </Typography>
             {user &&
               <Box sx={{flexWrap:'wrap',flexGrow: 1, display:'flex' }}>
-                {my_pages.map((page) => (
+                {Object.entries(my_pages).map((page) => (
                   <Button
                     // key={my_pages}
+                    onClick={() => navigate(page[0])}
                     sx={{ my: 2, color: 'white', display: 'block' }}
                   >
-                    {page}
+                    {page[1]}
                   </Button>
                 ))}
               </Box>
