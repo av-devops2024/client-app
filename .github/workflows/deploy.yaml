@@ -21,7 +21,7 @@ jobs:
         id: meta
         with:
           images: |
-            ${{secrets.DOCKERHUB_USERNAME}}
+            ${{secrets.DOCKERHUB_USERNAME}}/devops2024
           tags: |
             type=semver,pattern={{version}}
 
@@ -37,7 +37,4 @@ jobs:
         with:
           context: .
           push: true
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-          repository: ${{secrets.DOCKERHUB_USERNAME}}/devops2024
-          tags: erdeljisw322019/devops2024:v0.0.0 #${{ secrets.DOCKERHUB_USERNAME }}/${{ steps.meta.outputs.tags }}
+          tags: ${{ steps.meta.outputs.tags }}
