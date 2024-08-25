@@ -10,6 +10,8 @@ jobs:
   build_docker_images:
     name: Build Docker Image To Dockerhub
     runs-on: [ubuntu-latest]
+    env:
+      GITHUB_PAT: ${{ secrets.PAT_TOKEN }}
     steps:
       - name: Code Checkout
         uses: actions/checkout@v3
