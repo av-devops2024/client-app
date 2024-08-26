@@ -1,0 +1,38 @@
+.date-cell {
+    position: relative;
+    text-align: center;
+    font-size: 14px;
+    line-height: 24px;
+    color: #F7931E;
+}
+  
+.indicator {
+    position: absolute;
+    top: 1px;
+    right: 3px;
+    color: red;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.rdrDayToday {
+    color: white;
+}
+
+.rdrSelected, .rdrInRange, .rdrStartEdge, .rdrEndEdge{
+    background-color: #E7FD02;
+}
+
+.rdrDateDisplayWrapper{
+    display: none;
+}
+
+.marked-circle {
+    position: absolute;
+    top: 2px;
+    left: 15px;
+    width: 10px;
+    height: 10px;
+    background-color: green;
+    border-radius: 50%;
+}

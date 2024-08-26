@@ -35,3 +35,21 @@ export const getAccommodations = async () => {
       return errorMessage;
     }
 };
+
+export const getReservations = async (accommodationId: number) => {
+    const token = sessionStorage.getItem('token');
+    const response = await fetch(`http://localhost:8081/reservation/futureReservations/${accommodationId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token,
+      }
+    });
+    if(response.ok) {
+      return await response.json();
+    } else {
+        console.log('laa');
+      const errorMessage = await response.text();
+      return errorMessage;
+    }
+};
