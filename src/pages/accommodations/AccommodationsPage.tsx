@@ -1,11 +1,22 @@
 import { Box, Button } from '@mui/material';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import Accommodations from '../../components/accommodations/Accommodations';
+import { getAccommodations } from '../../services/accommodationService';
+import { Accommodation } from '../../requests/accommodation/CreateAccommodationRequest';
 
 const AccommodationsPage = () => {
     const navigate = useNavigate();
-    console.log('lal')
+    const [accommodations, setAccommodations] = useState<Accommodation[]>([]);
+    const getAllAccommodations = async () => {
+        const allAccommodations = await getAccommodations();
+        console.log('ee',allAccommodations);
+        setAccommodations(allAccommodations);
+    }
+
+    useEffect(() => {
+        getAllAccommodations();
+    }, []);
 
     return (
         <Box>
@@ -17,21 +28,8 @@ const AccommodationsPage = () => {
                     CREATE ACCOMMODATION
                 </Button>
             </Box>
-            <Accommodations/>
+            <Accommodations accommodations={accommodations} isSearch={false}/>
         </Box>
-        // <Box display='flex' flexDirection='row' justifyContent='space-between' margin={5}>
-            
-        //         <Accommodations/>
-
-        //     <Box>
-        //         <Button
-        //             variant='outlined'
-        //             onClick={() => navigate('/create-accommodation')}
-        //         >
-        //             CREATE ACCOMMODATION
-        //         </Button>
-        //     </Box>
-        // </Box>
     );
 };
 export default AccommodationsPage;

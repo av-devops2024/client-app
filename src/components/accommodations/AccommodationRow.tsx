@@ -11,7 +11,7 @@ import { useState } from "react";
 import AvailabilityDialog from "./AvailabilityDialog";
 const Color = require('color');
 
-const AccommodationRow = ({accommodation}: {accommodation: Accommodation}) => {
+const AccommodationRow = ({accommodation, isSearch}: {accommodation: Accommodation, isSearch: boolean}) => {
     const data = (accommodation.images[0] as any).imageData;
     const location = `${accommodation.location.street} ${accommodation.location.number}, ${accommodation.location.city}`;
     const [openPriceDialog, setOpenPriceDialog] = useState(false);
@@ -93,16 +93,35 @@ const AccommodationRow = ({accommodation}: {accommodation: Accommodation}) => {
                             Max Guests: {accommodation.maxNumberOfGuests}
                         </Typography>
                     </Box>
-                    <Box marginTop={10}>
-                        <Button variant="outlined" style={{width: '130px'}} onClick={() => setOpenPriceDialog(true)}>
-                            Cene
-                        </Button>
+
+                    <Box marginTop={isSearch ? 5 : 10}>
+                        {isSearch ? 
+                            <Typography variant="body2" style={{color: swatches.primary, fontWeight: 'bold'}}>{accommodation.dailyPrice} € / {accommodation.priceType?.replace("_", " ")}</Typography>
+                            :
+                            <Button variant="outlined" style={{width: '130px'}} onClick={() => setOpenPriceDialog(true)}>
+                                Prices
+                            </Button>
+                        }
                     </Box>
                     <Box marginTop={1}>
-                        <Button variant="outlined" style={{width: '130px'}} onClick={() => setOpenAvailabilityDialog(true)}>
-                            Dostupnost
-                        </Button>
+                        {isSearch ? 
+                            <Typography variant="body1" style={{color: swatches.primary, fontWeight: 'bold'}}>TOTAL: {accommodation.totalPrice} €</Typography>
+                        :
+                            <Button variant="outlined" style={{width: '130px'}} onClick={() => setOpenAvailabilityDialog(true)}>
+                                Availability
+                            </Button>
+                        }
                     </Box>
+
+                    <Box marginTop={1}>
+                        {isSearch &&
+                            <Button variant="outlined" style={{width: '130px'}} onClick={() => setOpenAvailabilityDialog(true)}>
+                                Reserve
+                            </Button>
+                        }
+                    </Box>
+
+
                 </Box>
             </Box>
             {openPriceDialog && <AddPriceDialog open={openPriceDialog} setOpen={setOpenPriceDialog} accommodationName={accommodation.name} accommodationId={accommodation.id}/>}
