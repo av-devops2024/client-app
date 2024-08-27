@@ -1,4 +1,5 @@
 import axios from "axios";
+import { SearchRequest } from "../requests/accommodation/SearchRequest";
 
 export const createAccommodation = async (request: FormData) => {
     const token = sessionStorage.getItem('token');
@@ -53,3 +54,24 @@ export const getReservations = async (accommodationId: number) => {
       return errorMessage;
     }
 };
+
+export const searchAccommodations = async (request: SearchRequest) => {
+  console.log(request);
+  const token = sessionStorage.getItem('token');
+  const response = await fetch(`http://localhost:8081/accommodation/search`, {
+      method: 'POST',
+      headers: {
+          'Authorization': 'Bearer ' + token,
+          'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(request)
+  });
+      
+  if(response.ok) {
+      return await response.json();
+  } else {
+      const errorMessage = await response.text();
+      throw errorMessage;
+  }
+};
+

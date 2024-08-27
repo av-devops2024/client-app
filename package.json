@@ -8,8 +8,8 @@
     "@mui/icons-material": "^5.16.6",
     "@mui/material": "^5.16.5",
     "@mui/styled-engine-sc": "^6.0.0-alpha.18",
-    "@mui/x-date-pickers": "^7.14.0",
-    "@mui/x-date-pickers-pro": "^7.14.0",
+    "@mui/x-date-pickers": "7.14.0",
+    "@mui/x-date-pickers-pro": "7.14.0",
     "@react-google-maps/api": "^2.19.3",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
@@ -18,9 +18,11 @@
     "@types/lodash": "^4.17.7",
     "@types/node": "^22.0.0",
     "@types/react": "^18.3.3",
+    "@types/react-date-range": "^1.4.9",
     "@types/react-dom": "^18.3.0",
     "axios": "^1.7.4",
     "color": "^4.2.3",
+    "date-fns": "^3.6.0",
     "dayjs": "^1.11.13",
     "lodash": "^4.17.21",
     "react": "^18.3.1",
@@ -30,8 +32,7 @@
     "react-hook-form": "^7.52.2",
     "react-router": "^6.25.1",
     "react-router-dom": "^6.25.1",
-    "react-scripts": "5.0.1",
-    "typescript": "^5.5.4",
+    "typescript": "5.5.4",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -59,6 +60,6 @@
     ]
   },
   "devDependencies": {
-    "@types/react-date-range": "^1.4.9"
+    "react-scripts": "latest"
   }
 }

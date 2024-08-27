@@ -13,7 +13,7 @@ import { useAuth } from '../../contexts/AuthContext';
 
 
 function Navbar() {
-    const my_pages = {'search': 'Search' , 'my-reservations': 'My Reservations', 'my-accommodations': 'My Accommodations', 'my-ratings': 'My Ratings'};
+    const my_pages = {'my-reservations': 'My Reservations', 'my-accommodations': 'My Accommodations', 'my-ratings': 'My Ratings'};
     const my_settings = ['Edit Profile', 'Logout'];
     const {user, logout} = useAuth();
     const navigate = useNavigate();
@@ -51,6 +51,7 @@ function Navbar() {
                 letterSpacing: '.2rem',
                 textDecoration: 'none',
               }}
+              onClick={() => navigate('/home')}
             >
               EReservation
             </Typography>

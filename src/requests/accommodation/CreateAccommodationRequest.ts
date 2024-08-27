@@ -9,4 +9,7 @@ export interface Accommodation{
     maxNumberOfGuests: number;
     automaticallyAcceptRequest: boolean;
     location: Location;
+    dailyPrice?: number;
+    priceType?: string;
+    totalPrice?: number;
 };
