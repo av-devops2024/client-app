@@ -8,6 +8,7 @@ import { LocalizationProvider, DatePicker, DateRange, DateRangePicker } from '@m
 import { AdapterDayjs } from '@mui/x-date-pickers-pro/AdapterDayjs';
 import { Dayjs } from "dayjs";
 import { searchAccommodations } from "../../services/accommodationService";
+import { SearchRequest } from "../../requests/accommodation/SearchRequest";
 
 const Search = (props: SearchProps) => {
     const googleMapsApiKey = 'AIzaSyDufN-mHd60fGbjME-hgXD5nV1-zvQ8GrU';
@@ -78,7 +79,7 @@ const Search = (props: SearchProps) => {
             };
             try {
                 const response = await searchAccommodations(request);
-                console.log(response);
+                props.setSearchRequest(request);
                 props.setResults(response);
             } catch(error){
                 console.log(error);
@@ -159,4 +160,5 @@ export default Search;
 interface SearchProps{
     results: any[];
     setResults: Dispatch<SetStateAction<any>>;
+    setSearchRequest: Dispatch<SetStateAction<SearchRequest|undefined>>;
 }
