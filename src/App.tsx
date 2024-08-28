@@ -12,6 +12,7 @@ import EditProfilePage from './pages/profile/EditProfilePage';
 import { AuthProvider } from './contexts/AuthContext';
 import AccommodationsPage from './pages/accommodations/AccommodationsPage';
 import CreateAccommodationPage from './pages/accommodations/CreateAccommodationPage';
+import ReservationPage from './pages/reservations/ReservationPage';
 
 
 const App = () => {
@@ -28,6 +29,7 @@ const App = () => {
             <Route path='/edit-profile' element={<EditProfilePage/>}/>
             <Route path='/my-accommodations' element={<AccommodationsPage/>}/>
             <Route path='/create-accommodation' element={<CreateAccommodationPage/>}/>
+            <Route path='/my-reservations' element={<ReservationPage/>}/>
           </Route>
         </Routes>
       </BrowserRouter>

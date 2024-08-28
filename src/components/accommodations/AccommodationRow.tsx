@@ -9,13 +9,16 @@ import { swatches } from "../../theme";
 import AddPriceDialog from "./AddPriceDialog";
 import { useState } from "react";
 import AvailabilityDialog from "./AvailabilityDialog";
+import ConfirmReservationDialog from "../reservations/ConfirmReservationDialog";
+import { SearchRequest } from "../../requests/accommodation/SearchRequest";
 const Color = require('color');
 
-const AccommodationRow = ({accommodation, isSearch}: {accommodation: Accommodation, isSearch: boolean}) => {
+const AccommodationRow = ({accommodation, isSearch, searchRequest}: {accommodation: Accommodation, isSearch: boolean, searchRequest?: SearchRequest}) => {
     const data = (accommodation.images[0] as any).imageData;
     const location = `${accommodation.location.street} ${accommodation.location.number}, ${accommodation.location.city}`;
     const [openPriceDialog, setOpenPriceDialog] = useState(false);
     const [openAvailabilityDialog, setOpenAvailabilityDialog] = useState(false);
+    const [openReservationDialog, setOpenReservationDialog] = useState(false);
     const getServices = () => {
         return accommodation.benefits.map(service => {
             if(service === 'WIFI') {
@@ -74,7 +77,7 @@ const AccommodationRow = ({accommodation, isSearch}: {accommodation: Accommodati
                     <img 
                         src={`data:image/jpeg;base64,${data}`} 
                         alt="Accommodation" 
-                        style={{ width: '300px', height: 'auto' }} 
+                        style={{ width: '300px', height: '200px' }} 
                     />
                 </Box>
                 <Box display="flex" flexDirection='column'>
@@ -115,7 +118,7 @@ const AccommodationRow = ({accommodation, isSearch}: {accommodation: Accommodati
 
                     <Box marginTop={1}>
                         {isSearch &&
-                            <Button variant="outlined" style={{width: '130px'}} onClick={() => setOpenAvailabilityDialog(true)}>
+                            <Button variant="outlined" style={{width: '130px'}} onClick={() => setOpenReservationDialog(true)}>
                                 Reserve
                             </Button>
                         }
@@ -124,6 +127,8 @@ const AccommodationRow = ({accommodation, isSearch}: {accommodation: Accommodati
 
                 </Box>
             </Box>
+        
+            {openReservationDialog && searchRequest && <ConfirmReservationDialog open={openReservationDialog} setOpen={setOpenReservationDialog} accommodation={accommodation} searchRequest={searchRequest}/>}
             {openPriceDialog && <AddPriceDialog open={openPriceDialog} setOpen={setOpenPriceDialog} accommodationName={accommodation.name} accommodationId={accommodation.id}/>}
             {openAvailabilityDialog && <AvailabilityDialog open={openAvailabilityDialog} setOpen={setOpenAvailabilityDialog} accommodationName={accommodation.name} accommodationId={accommodation.id}/>}
         </Box>
