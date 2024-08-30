@@ -1,4 +1,5 @@
 import { Accommodation } from "../requests/accommodation/CreateAccommodationRequest";
+import { RatingResponse } from "./RatingResponse";
 
 export interface Reservation {
     guestId: number;
@@ -13,4 +14,5 @@ export interface Reservation {
     canceled: boolean;
     accommodation: Accommodation;
     price: number;
+    ratingResponse?: RatingResponse;
 }
