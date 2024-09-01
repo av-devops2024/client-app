@@ -1,15 +1,19 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 // import StoreIcon from '@mui/icons-material/Store';
 import Typography from '@mui/material/Typography';
 import { Box, Button, IconButton } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
-import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import { Outlet, useNavigate } from 'react-router';
 import { useAuth } from '../../contexts/AuthContext';
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import { getNotifications } from '../../services/notificationService';
+import { Notification } from '../../model/notification';
+import { format } from 'date-fns';
+import { swatches } from '../../theme';
 
 
 function Navbar() {
@@ -18,6 +22,8 @@ function Navbar() {
     const {user, logout} = useAuth();
     const navigate = useNavigate();
     const [anchorElUser, setAnchorElUser] = useState(null);
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const [notifications, setNotifications] = useState<Notification[]>([]);
 
     const handleOpenSettingsMenu = (event: any) => {
       setAnchorElUser(event.currentTarget);
@@ -32,6 +38,46 @@ function Navbar() {
         navigate("/auth");
       }
     };
+
+    const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+      setAnchorEl(event.currentTarget);
+    };
+  
+    const handleClose = () => {
+      setAnchorEl(null);
+    };
+
+   useEffect(() => {
+    if(user){
+      loadNotifications();
+    }
+   }, [user])
+
+    const loadNotifications = async () => {
+      const response = await getNotifications();
+      console.log(response);
+      setNotifications(response as Notification[]);
+    }
+
+    const createMessage = (notification: Notification) => {
+      switch(notification.notificationType) {
+        case 'RESERVATION_REQUEST': {
+          return `New reservation request for ${notification.accommodationName} from ${notification.guestName}.`;
+        }
+        case 'RESERVATION_CANCELLED':{
+          return `Guest ${notification.guestName} cancelled reservation for ${notification.accommodationName}.`;
+        }
+        case 'RATING_HOST': {
+          return `Guest ${notification.guestName} rated you.`;
+        } 
+        case 'RATING_ACCOMMODATION': {
+          return `Guest ${notification.guestName} rated your accommodation ${notification.accommodationName}.`;
+        }
+        case 'RESERVATION_ANSWER': {
+          return `You have answer on your reservation request for accommodation ${notification.accommodationName}.`;
+        }
+      }
+    }
 
 
     return (
@@ -68,34 +114,71 @@ function Navbar() {
                 ))}
               </Box>
           }
-            {user && <Box sx={{ flexGrow: 0 }}>
-              <Tooltip title="Open my_settings">
-                <IconButton onClick={handleOpenSettingsMenu} sx={{ p: 0 }}>
-                  <Avatar alt={user?.firstName} src="/static/images/avatar/2.jpg" />
-                </IconButton>
-              </Tooltip>
-              <Menu
-                sx={{ mt: '55px' }}
-                id="menu-appbar"
-                anchorEl={anchorElUser}
-                anchorOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                open={Boolean(anchorElUser)}
-                onClose={() => setAnchorElUser(null)}
-              >
-                {my_settings.map((setting) => (
-                  <MenuItem key={setting} onClick={() => handleClickSettingsMenuItem(setting)}>
-                    <Typography textAlign="center">{setting}</Typography>
-                  </MenuItem>
-                ))}
-              </Menu>
-            </Box>
-          }
-        </Toolbar>
-      </AppBar>
-      <Outlet/>
+            {user && 
+              <Box sx={{ flexGrow: 0 }}>
+                  <IconButton onClick={handleOpenSettingsMenu} sx={{ p: 0 }}>
+                    <Avatar alt={user?.firstName} src="/static/images/avatar/2.jpg" />
+                  </IconButton>
+                  <Menu
+                    id="menu-appbar"
+                    anchorEl={anchorElUser}
+                    anchorOrigin={{
+                      vertical: 'top',
+                      horizontal: 'right',
+                    }}
+                    open={Boolean(anchorElUser)}
+                    onClose={() => setAnchorElUser(null)}
+                  >
+                    {my_settings.map((setting) => (
+                      <MenuItem key={setting} onClick={() => handleClickSettingsMenuItem(setting)} sx={{width: '400px'}}>
+                        <Typography textAlign="center">{setting}</Typography>
+                      </MenuItem>
+                    ))}
+                  </Menu>
+                  <IconButton style={{marginLeft: 5}} onClick={handleClick}>
+                    <NotificationsIcon fontSize='large'/>
+                  </IconButton>
+                  <Menu
+                    anchorEl={anchorEl}
+                    open={Boolean(anchorEl)}
+                    onClose={handleClose}
+                    PaperProps={{
+                      style: {
+                        maxHeight: 48 * 4.5, // 4.5 times the height of a single item
+                        width: '500px',
+                        overflowX: 'auto'
+                      },
+                    }}
+                  >
+                    {notifications.length === 0 ? (
+                      <MenuItem disabled>
+                        <Typography variant="body2">No new notifications</Typography>
+                      </MenuItem>
+                    ) : (
+                      notifications.map((notification:Notification, index) => (
+                        <MenuItem key={index} divider
+                          sx={{
+                            '&:hover': {
+                              backgroundColor: 'transparent', // Disable background color change on hover
+                              cursor: 'default', // Set cursor to default
+                            },
+                          }}
+                        >
+                          <Box>
+                            <Typography color={swatches.gray[100]}>
+                              {format(notification.timestamp, 'dd.MM.yyyy. HH:mm')}
+                            </Typography>
+                            <Typography>{createMessage(notification)}</Typography>
+                          </Box>
+                        </MenuItem>
+                      ))
+                    )}
+                  </Menu>
+                </Box>
+              }
+            </Toolbar>
+          </AppBar>
+        <Outlet/>
       </>
     );
 }
