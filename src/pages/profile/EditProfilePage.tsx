@@ -6,11 +6,13 @@ import {updateUser} from '../../services/userService';
 import { UpdateUserRequest } from "../../requests/user/UpdateUserRequest";
 import ChangePasswordDialog from '../../components/users/ChangePasswordDialog';
 import DeleteAccountDialog from '../../components/users/DeleteAccountDialog';
+import NotificationSettingsDialog from "../../components/users/NotificationSettingsDialog";
 
 const EditProfilePage = () => {
     const [message, setMessage] = useState("");
     const [openChangePasswordDialog, setOpenChangePasswordDialog] = useState(false);
     const [openDeleteAccountDialog, setOpenDeleteAccountDialog] = useState(false);
+    const [openNotificationDialog, setOpenNotificationDialog] = useState(false);
     const {user} = useAuth();
     const { register, handleSubmit, getValues, formState: { errors, dirtyFields }, setValue, reset } = useForm();
     const onSubmit = async (data: any) => {
@@ -171,18 +173,33 @@ const EditProfilePage = () => {
                         setOpen={setOpenDeleteAccountDialog}
                     />
                 }
+
+                {
+                    openNotificationDialog && 
+                    <NotificationSettingsDialog 
+                        open={openNotificationDialog} 
+                        setOpen={setOpenNotificationDialog}
+                    />
+                }
             </Box>
             <Box
                 sx={{
-                mx: 4,
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'flex-end'
+                    mx: 4,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'flex-end'
                 }}
             >
                 <Button
+                    variant="outlined"
+                    sx={{width: 250}}
+                    onClick={() => setOpenNotificationDialog(true)}
+                >
+                    Notification settings
+                </Button>
+                <Button
                     variant="contained"
-                    sx={{ mb: 10 }}
+                    sx={{ mb: 10, mt: -10, width: 250 }}
                     onClick={() => setOpenDeleteAccountDialog(true)}
                 >
                     Delete account
