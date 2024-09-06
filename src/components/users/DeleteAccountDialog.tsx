@@ -1,4 +1,4 @@
-import { Dialog, DialogTitle, DialogContent, RadioGroup, FormControlLabel, Radio, DialogActions, Button, Alert } from "@mui/material"
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Alert } from "@mui/material"
 import React, { useState } from "react"
 import { DialogProps } from "./ChangePasswordDialog"
 import { deleteAccount } from "../../services/userService";
@@ -14,7 +14,6 @@ const DeleteAccountDialog = (props: DialogProps) => {
     const handleDelete = async () => {
         const responseMessage = await deleteAccount();
         if(responseMessage === ""){
-            console.log('lalala');
             await logout();
             navigate("/auth");
         } else {

@@ -11,7 +11,6 @@ export const getNotifications = async () => {
       return await response.json();
     } else {
       const errorMessage = await response.text();
-      console.log(errorMessage);
       return errorMessage;
     }
 }

@@ -52,7 +52,6 @@ export const deleteAccount = async () => {
     } else {
         
         const errorMessage = await response.text();
-        console.log(errorMessage);
         return errorMessage;
     }
 }

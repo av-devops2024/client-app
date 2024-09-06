@@ -1,10 +1,4 @@
-import { Box, Button, Rating, Typography } from "@mui/material";
-import { Accommodation } from "../../requests/accommodation/CreateAccommodationRequest";
-import WifiIcon from '@mui/icons-material/Wifi';
-import KitchenIcon from '@mui/icons-material/Kitchen';
-import GroupIcon from '@mui/icons-material/Group';
-import AcUnitIcon from '@mui/icons-material/AcUnit';
-import LocalParkingIcon from '@mui/icons-material/LocalParking';
+import { Box, Button, Typography } from "@mui/material";
 import { Dispatch, SetStateAction, useState } from "react";
 import { Reservation } from "../../reponses/Reservation";
 import { swatches } from "../../theme";
@@ -12,13 +6,12 @@ import { format } from "date-fns";
 import AddRateDialog from "./AddRateDialog";
 const Color = require('color');
 
-const ReservationRatingRow = ({reservation, isRated, setReservations}: {reservation: Reservation, isRated: boolean, setReservations: Dispatch<SetStateAction<Reservation[]|undefined>>}) => {
+const ReservationRatingRow = ({reservation, isRated, setReservations}: {reservation: Reservation, isRated: boolean, setReservations: Dispatch<SetStateAction<Reservation[]>>}) => {
     const data = reservation.accommodation.images.length > 0 ? (reservation.accommodation.images[0] as any).imageData : "";
     const location = `${reservation.accommodation.location.street} ${reservation.accommodation.location.number} ${reservation.accommodation.location.city}`;
     const [openRateDialog, setOpenRateDialog] = useState(false);
 
     const onClose = (updating: boolean) => {
-        console.log(updating);
         if(!updating) {
             setReservations((prevReservations) => {
                 let updatedReservations = prevReservations ? [...prevReservations] : [];

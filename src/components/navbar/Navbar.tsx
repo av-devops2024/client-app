@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
-// import StoreIcon from '@mui/icons-material/Store';
 import Typography from '@mui/material/Typography';
 import { Box, Button, IconButton } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
@@ -55,7 +54,6 @@ function Navbar() {
 
     const loadNotifications = async () => {
       const response = await getNotifications();
-      console.log(response);
       setNotifications(response as Notification[]);
     }
 

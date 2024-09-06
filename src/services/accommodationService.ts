@@ -18,7 +18,6 @@ export const createAccommodation = async (request: FormData) => {
 
 export const getAccommodations = async () => {
     const token = sessionStorage.getItem('token');
-    console.log(token)
     const response = await fetch('http://localhost:8081/accommodation', {
       method: 'GET',
       headers: {
@@ -26,12 +25,9 @@ export const getAccommodations = async () => {
         'Authorization': 'Bearer ' + token,
       }
     });
-    console.log(response);
     if(response.ok) {
-        console.log('laa');
       return await response.json();
     } else {
-        console.log('laa');
       const errorMessage = await response.text();
       return errorMessage;
     }
@@ -49,14 +45,12 @@ export const getReservations = async (accommodationId: number) => {
     if(response.ok) {
       return await response.json();
     } else {
-        console.log('laa');
       const errorMessage = await response.text();
       return errorMessage;
     }
 };
 
 export const searchAccommodations = async (request: SearchRequest) => {
-  console.log(request);
   const token = sessionStorage.getItem('token');
   const response = await fetch(`http://localhost:8081/accommodation/search`, {
       method: 'POST',

@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { Box, Grid } from "@mui/material";
+import { Box } from "@mui/material";
 import Search from "../../components/search/Search";
 import { Accommodation } from "../../requests/accommodation/CreateAccommodationRequest";
 import Accommodations from "../../components/accommodations/Accommodations";

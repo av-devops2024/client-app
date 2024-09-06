@@ -1,4 +1,4 @@
-import { Dialog, DialogTitle, DialogContent, DialogContentText, TextField, DialogActions, Button, InputAdornment, IconButton, Alert } from "@mui/material";
+import { Dialog, DialogTitle, DialogContent, TextField, DialogActions, Button, InputAdornment, IconButton, Alert } from "@mui/material";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -46,7 +46,7 @@ const ChangePasswordDialog = (props: DialogProps) => {
         <DialogContent>
             <TextField
                 margin="normal"
-                required
+                // required
                 fullWidth
                 label="Current Password"
                 type={showPassword ? 'text' : 'password'}
@@ -80,7 +80,7 @@ const ChangePasswordDialog = (props: DialogProps) => {
                 />
             <TextField
                 margin="normal"
-                required
+                // required
                 fullWidth
                 label="New Password"
                 type={showNewPassword ? 'text' : 'password'}
@@ -116,7 +116,7 @@ const ChangePasswordDialog = (props: DialogProps) => {
 
             <TextField
                 margin="normal"
-                required
+                // required
                 fullWidth
                 label="Confirm Password"
                 type={showConfirmPassword ? 'text' : 'password'}

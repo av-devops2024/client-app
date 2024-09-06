@@ -3,7 +3,7 @@ import { Reservation } from "../../reponses/Reservation";
 import ReservationRatingRow from "./ReservationRatingRow";
 import { Dispatch, SetStateAction } from "react";
 
-const ReservationRatings = ({resRatings, isRated, setResRatings}: {resRatings: Reservation[], isRated: boolean, setResRatings: Dispatch<SetStateAction<Reservation[]|undefined>>}) => {
+const ReservationRatings = ({resRatings, isRated, setResRatings}: {resRatings: Reservation[], isRated: boolean, setResRatings: Dispatch<SetStateAction<Reservation[]>>}) => {
    
     return(
         <Box display='flex' justifyContent='center' flexDirection='column' alignItems='center' width='100%'>

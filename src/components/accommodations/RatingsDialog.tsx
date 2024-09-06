@@ -7,30 +7,27 @@ import { getRatings } from "../../services/ratingService";
 
 const RatingsDialog = (props: RatingsDialogProps) => {
     const [rating, setRating] = useState<RatingSummaryResponse>();
+    const [errorMessage, setErrorMessage] = useState('');
     const loadRatings = async () => {
         if(props.accommodationId){
             try{
                 const response = await getRatings(props.accommodationId);
                 if(response) {
                     if(response?.ratings && response.ratings.length === 0){
-                        console.log('lala');
                         setRating(undefined);
                     } else {
                         setRating(response);
                     }
                 }
             } catch(error) {
-                console.log(error);
+                setErrorMessage(error as string);
             }
         } 
     }
 
     useEffect(() => {
-        console.log('lala');
         loadRatings();
     }, []);
-
-    console.log(rating);
 
     return (
         <Dialog
@@ -40,6 +37,7 @@ const RatingsDialog = (props: RatingsDialogProps) => {
       >
         <DialogTitle marginTop={2} fontStyle={{color: swatches.primary}}>Ratings for {props.accommodationName}</DialogTitle>
         <DialogContent>
+            {errorMessage !== "" && <Alert color='error'>{errorMessage}</Alert>}
             {rating ?
                 <Box>
                     <Rating value={rating?.meanRating ?? 0} readOnly/>

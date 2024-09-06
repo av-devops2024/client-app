@@ -1,10 +1,10 @@
 import { Box, Tab, Tabs } from "@mui/material";
 import CustomTabPanel from "../../components/CustomTabPanel";
 import { useEffect, useState } from "react";
-import Accommodations from "../../components/accommodations/Accommodations";
 import { getResRatings } from "../../services/ratingService";
 import { Reservation } from "../../reponses/Reservation";
 import ReservationRatings from "../../components/ratings/ReservationRatings";
+import { toast, ToastContainer } from "react-toastify";
 
 function a11yProps(index: number) {
     return {
@@ -15,7 +15,7 @@ function a11yProps(index: number) {
 
 const RatingsPage = () => {
     const [value, setValue] = useState(0);
-    const [ratingsRes, setRatingsRes] = useState<Reservation[]>();
+    const [ratingsRes, setRatingsRes] = useState<Reservation[]>([]);
     
 
     const loadResRatings = async () => {
@@ -25,7 +25,7 @@ const RatingsPage = () => {
                 setRatingsRes(response);
             }
         } catch(error) {
-            console.log(error);
+            toast.error(error as string);
         }
     }
 
@@ -47,6 +47,7 @@ const RatingsPage = () => {
             <CustomTabPanel value={value} index={1}>
                 <ReservationRatings resRatings={ratingsRes ?? []} isRated={true} setResRatings={setRatingsRes}/>
             </CustomTabPanel>
+            <ToastContainer/>
       </Box>
     );
 };

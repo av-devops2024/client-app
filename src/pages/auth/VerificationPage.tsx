@@ -1,6 +1,6 @@
 import React, { useState, useRef, ChangeEvent, FormEvent } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Box, TextField, Button, Typography, Alert, Snackbar } from '@mui/material';
+import { Box, TextField, Button, Typography, Snackbar } from '@mui/material';
 import { verify } from '../../services/authService';
 
 const Verification = () => {

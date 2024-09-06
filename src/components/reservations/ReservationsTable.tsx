@@ -1,5 +1,4 @@
 import { Box, Button, Snackbar, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
-import { ReservationRequest } from "../../requests/reservation/ReservationRequest";
 import { Reservation } from "../../reponses/Reservation";
 import { format } from "date-fns";
 import { Dispatch, SetStateAction, useState } from "react";

@@ -1,7 +1,6 @@
 import { ReservationRequest } from "../requests/reservation/ReservationRequest";
 
 export const addReservation = async (request: ReservationRequest) => {
-    console.log(request);
     const token = sessionStorage.getItem('token');
     const response = await fetch(`http://localhost:8081/reservationRequest`, {
         method: 'POST',

@@ -1,11 +1,10 @@
 import { Box, FormControlLabel, Switch, Tab, Tabs } from "@mui/material";
 import { useEffect, useState } from "react";
-import TabPanel from '@mui/lab/TabPanel';
-import { TabContext, TabList } from "@mui/lab";
 import ReservationsTable from "../../components/reservations/ReservationsTable";
 import { Reservation } from "../../reponses/Reservation";
 import { getReservationRequests, getReservations } from "../../services/reservationService";
 import CustomTabPanel from "../../components/CustomTabPanel";
+import { toast, ToastContainer } from "react-toastify";
   
 function a11yProps(index: number) {
   return {
@@ -17,6 +16,7 @@ const ReservationPage = () => {
     const [value, setValue] = useState(0);
     const [reservations, setReservations] = useState<Reservation[]>([]);
     const [showForAccommodation, setShowForAccommodation] = useState(false);
+
     useEffect(() => {
         loadData();
     }, [value, showForAccommodation]);
@@ -26,7 +26,7 @@ const ReservationPage = () => {
             const result = value === 0 ? await getReservationRequests(showForAccommodation) : await getReservations(showForAccommodation);
             setReservations(result);
         } catch (error){
-            console.log(error);
+            toast.error(error as string);
         }
     }
 
@@ -51,6 +51,7 @@ const ReservationPage = () => {
             <CustomTabPanel value={value} index={1}>
             <ReservationsTable reservations={reservations} isRequests={false} setReservations={setReservations} isHost={showForAccommodation}/>
             </CustomTabPanel>
+            <ToastContainer/>
       </Box>
     );
 };

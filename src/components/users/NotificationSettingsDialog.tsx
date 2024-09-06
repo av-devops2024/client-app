@@ -1,12 +1,11 @@
-import { Dialog, DialogTitle, DialogContent, RadioGroup, FormControlLabel, Radio, DialogActions, Button, Alert, Box, Switch } from "@mui/material"
+import { Dialog, DialogTitle, DialogContent, FormControlLabel, DialogActions, Button, Alert, Box, Switch } from "@mui/material"
 import React, { useEffect, useState } from "react"
 import { DialogProps } from "./ChangePasswordDialog"
-import { deleteAccount, getNotifications, saveNotifications } from "../../services/userService";
+import { getNotifications, saveNotifications } from "../../services/userService";
 import { useAuth } from "../../contexts/AuthContext";
 import { useNavigate } from "react-router";
 
 const DeleteAccountDialog = (props: DialogProps) => {
-    const {logout} = useAuth();
     const [message, setMessage] = useState('');
     const [disabledSave, setDisabledSave] = useState(false);
     const navigate = useNavigate();
@@ -15,6 +14,7 @@ const DeleteAccountDialog = (props: DialogProps) => {
     const [rateHostNotification, setRateHostNotification] = useState(false);
     const [rateAccommodationNotification, setRateAccommodationNotification] = useState(false);
     const [answerReservationRequestNotification, setAnswerReservationRequestNotification] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
 
     const save = async () => {
         const request = {
@@ -43,7 +43,7 @@ const DeleteAccountDialog = (props: DialogProps) => {
             setRateAccommodationNotification(response.rateAccommodationNotification);
             setRateHostNotification(response.rateHostNotification);
         } catch(error) {
-            console.log(error);
+            setMessage(error as string);
         }
     }
 

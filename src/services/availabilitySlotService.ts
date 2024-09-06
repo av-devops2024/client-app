@@ -1,7 +1,6 @@
 import { AvailabilitySlot } from "../model/availability-slot";
 
 export const addAvailabilitySlot = async (request: AvailabilitySlot) => {
-    console.log(request);
     const token = sessionStorage.getItem('token');
     const response = await fetch(`http://localhost:8081/availabilitySlot`, {
         method: 'POST',

@@ -12,7 +12,6 @@ const SignUp = (props: SignUpProps) => {
     const [clickedRegister, setClickedRegister] = useState(false);
     const [message, setMessage] = useState("");
     const { register, handleSubmit, getValues, formState: { errors } } = useForm();
-    // const {navigate} = useNavigate();
     const onSubmit = async (data: any) => {
         setClickedRegister(true);
         const responseMessage = await signUp(data as RegistrationRequest);

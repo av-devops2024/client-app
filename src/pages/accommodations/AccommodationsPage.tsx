@@ -1,4 +1,4 @@
-import { Box, Button } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import Accommodations from '../../components/accommodations/Accommodations';
@@ -10,7 +10,6 @@ const AccommodationsPage = () => {
     const [accommodations, setAccommodations] = useState<Accommodation[]>([]);
     const getAllAccommodations = async () => {
         const allAccommodations = await getAccommodations();
-        console.log('ee',allAccommodations);
         setAccommodations(allAccommodations);
     }
 
@@ -28,6 +27,7 @@ const AccommodationsPage = () => {
                     CREATE ACCOMMODATION
                 </Button>
             </Box>
+            {accommodations.length === 0 && <Typography variant='h4' style={{textAlign: 'center', marginTop: 20}}>You don't have accommodations.</Typography>}
             <Accommodations accommodations={accommodations} isSearch={false}/>
         </Box>
     );

@@ -1,4 +1,4 @@
-import { Dialog, Alert, DialogTitle, DialogContent, TextField, InputAdornment, IconButton, DialogActions, Button, Box, FormControl, InputLabel, Select, OutlinedInput, MenuItem, List, ListSubheader, ListItem, Typography } from "@mui/material";
+import { Dialog, DialogTitle, DialogContent, TextField, InputAdornment, DialogActions, Button, Box, FormControl, InputLabel, Select, OutlinedInput, MenuItem, List, ListSubheader, ListItem, Typography, Alert } from "@mui/material";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { DateRangePicker, Range } from 'react-date-range';
 import 'react-date-range/dist/styles.css'; // main css file
@@ -34,6 +34,7 @@ const AddPriceDialog = (props: AddPriceDialogProps) => {
     const [reservations, setReservations] = useState<Date[]>([]);
     const [prices, setPrices] = useState<Price[]>([]);
     const [price, setPrice] = useState(0);
+    const [errorMessage, setErrorMessage] = useState('');
 
     const getAllReservations = async () => {
         if(props.accommodationId) {
@@ -49,13 +50,11 @@ const AddPriceDialog = (props: AddPriceDialogProps) => {
     const getAllPrices = async () => {
         if(props.accommodationId) {
             const fetchedPrices = await getPrices(props.accommodationId);
-            console.log(fetchedPrices)
             setPrices(fetchedPrices);
         }
     }
 
     useEffect(() => {
-        console.log('ee');
         getAllReservations();
         getAllPrices();
     }, []);
@@ -74,7 +73,7 @@ const AddPriceDialog = (props: AddPriceDialogProps) => {
                     setPrices((prevPrices) => [...prevPrices, newPrice]);
                 }
             } catch(error) {
-                console.log(error);
+                setErrorMessage(error as string);
             }
         }
         
@@ -93,6 +92,7 @@ const AddPriceDialog = (props: AddPriceDialogProps) => {
         <DialogTitle marginTop={2}>Change price - {props.accommodationName}</DialogTitle>
         <DialogContent>
             <Box display='flex' flexDirection='row' justifyContent='space-between' width='1000px'>
+                {errorMessage !== "" && <Alert color='error'>{errorMessage}</Alert>}
                 <Box>
                     <List
                         subheader={

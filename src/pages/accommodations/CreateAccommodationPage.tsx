@@ -37,35 +37,14 @@ const CreateAccommodationPage = () => {
         getAllServices();
     }, []);
     const onSubmit = async (data: any) => {
-        // setClickedRegister(true);
-        // const responseMessage = await signUp(data as RegistrationRequest);
-        // if(responseMessage === ""){
-        //     setMessage("Your account is registered successfully.Please go to your email to verify account!");
-        // } else {
-        //     setMessage(responseMessage);
-        //     setClickedRegister(false);
-        // }
-        const request = {
-            name: data.name,
-            benefits: services,
-            minNumberOfGuests: data.minNumberOfGuests,
-            maxNumberOfGuests: data.maxNumberOfGuests,
-            automaticallyAcceptRequest: checkedAutomaticallyAcceptance
-        };
         const formData = new FormData();
-        console.log(data.name);
         formData.append('name', data.name.toString());
         formData.append('minNumberOfGuests', data.minNumberOfGuests.toString());
         formData.append('maxNumberOfGuests', data.maxNumberOfGuests.toString());
         formData.append('automaticallyAcceptRequest', checkedAutomaticallyAcceptance.toString());
-        console.log(selectedServices);
         formData.append('location', JSON.stringify(location));
         selectedServices.forEach(service => formData.append("services", service))
         files.forEach(file => formData.append('images', file));
-
-        Array.from(formData.entries()).forEach(([key, value]) => {
-            console.log(key, value);
-        });
         setDisabledForm(true);
         const responseMessage = await createAccommodation(formData);
         if(responseMessage === "") {

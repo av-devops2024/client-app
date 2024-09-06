@@ -1,6 +1,6 @@
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Rating, TextField, Typography, Box } from "@mui/material";
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Rating, TextField, Typography, Box, Alert } from "@mui/material";
 import { swatches } from "../../theme";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { addRating, deleteRating, updateRating } from "../../services/ratingService";
 import { RatingResponse } from "../../reponses/RatingResponse";
 
@@ -9,10 +9,10 @@ const AddRateDialog = (props: AddRateDialogProps) => {
     const [hostText, setHostText] = useState<string>(props.rating?.hostText ?? '');
     const [accommodationValue, setAccommodationValue] = useState<number|null>(props.rating?.accommodationValue ?? 0);
     const [hostValue, setHostValue] = useState<number|null>(props.rating?.hostValue ?? 0);
+    const [errorMessage, setErrorMessage] = useState('');
 
     useEffect(() => {
         if(props.rating) {
-            console.log(props.rating);
             setAccommodationText(props.rating.accommodationText);
             setHostText(props.rating.hostText);
             setAccommodationValue(props.rating.accommodationValue);
@@ -32,12 +32,11 @@ const AddRateDialog = (props: AddRateDialogProps) => {
                 };
 
                 const response = props.rating ? await updateRating(request, props.rating.id) : await addRating(request);
-                console.log(response);
                 if(response === '') {
                     props.onClose(props.rating !== undefined);
                 }
             } catch(error) {
-                console.log(error);
+                setErrorMessage(error as string);
             }
         } 
     }
@@ -45,14 +44,13 @@ const AddRateDialog = (props: AddRateDialogProps) => {
     const deleteRate = async () => {
         try{
             if(props.rating && props.rating.id){
-                console.log(props.rating.id)
                 const response = await deleteRating(props.rating.id);
                 if(response === '') {
                     props.onClose(props.rating === undefined);
                 }
             }
         } catch(error) {
-            console.log(error);
+            setErrorMessage(error as string);
         }
     } 
 
@@ -72,6 +70,7 @@ const AddRateDialog = (props: AddRateDialogProps) => {
             </Box>
         </DialogTitle>
         <DialogContent>
+            {errorMessage !== "" && <Alert color='error'>{errorMessage}</Alert>}
             <Box display='flex' flexDirection='column' width={600} marginTop={3}>
                 <Box display='flex' flexDirection='row'>
                     <Typography component="legend" variant='body2' style={{marginTop: 2}}> Accommodation rate</Typography>

@@ -1,7 +1,7 @@
-import { Dialog, DialogTitle, DialogContent, TextField, InputAdornment, IconButton, DialogActions, Button, Box, FormControl, InputLabel, Select, OutlinedInput, MenuItem, List, ListSubheader, ListItem, Typography } from "@mui/material";
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Box, List, ListSubheader, ListItem, Typography, Alert } from "@mui/material";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { DateRangePicker, Range } from 'react-date-range';
-import 'react-date-range/dist/styles.css'; // main css file
+import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
 import './styles.css';
 import { format } from "date-fns";
@@ -33,6 +33,7 @@ const AvailabilityDialog = (props: AvailabilityDialogProps) => {
     const [formattedAvailabilityDates, setFormattedAvailabilityDates] = useState<Date[]>([]);
     const [availabilitySlots, setAvailabilitySlots] = useState<AvailabilitySlot[]>([]);
     const [disabledButton, setDisabledButton] = useState(true);
+    const [errorMessage, setErrorMessage] = useState('');
 
     const getAllReservations = async () => {
         if(props.accommodationId) {
@@ -66,7 +67,6 @@ const AvailabilityDialog = (props: AvailabilityDialogProps) => {
                 currentDate.setDate(currentDate.getDate() + 1);
             }          
         }
-        console.log(formattedDates);
         setFormattedAvailabilityDates(formattedDates);
     }
 
@@ -81,7 +81,6 @@ const AvailabilityDialog = (props: AvailabilityDialogProps) => {
 
     const saveNewAvailability = async () => {
         if(props.accommodationId && value[0].startDate && value[0].endDate){
-            console.log(value[0].startDate, formatUTCDate(value[0].startDate));
             const availabilitySlotRequest = {
                 startDate: value[0].startDate,
                 endDate: value[0].endDate,
@@ -95,7 +94,7 @@ const AvailabilityDialog = (props: AvailabilityDialogProps) => {
                     setDisabledButton(true);
                 }
             } catch(error) {
-                console.log(error);
+                setErrorMessage(error as string);
             }
         }
         
@@ -108,7 +107,7 @@ const AvailabilityDialog = (props: AvailabilityDialogProps) => {
                 setAvailabilitySlots(response);
                 formatListOfAvailabilityDates(response);
             } catch (error){
-                console.log(error);
+                setErrorMessage(error as string);
             }
         }
     }
@@ -123,6 +122,7 @@ const AvailabilityDialog = (props: AvailabilityDialogProps) => {
         <DialogTitle marginTop={2}>Change accommodation availability - {props.accommodationName}</DialogTitle>
         <DialogContent>
         <Box display='flex' flexDirection='row' justifyContent='space-between' width='1000px'>
+            {errorMessage !== "" && <Alert color='error'>{errorMessage}</Alert>}
                 <Box>
                     <List
                         subheader={

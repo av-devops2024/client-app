@@ -1,14 +1,15 @@
-import { Box, Button, InputAdornment, TextField } from "@mui/material";
+import { Box, Button, InputAdornment, TextField, Typography } from "@mui/material";
 import { LoadScript, Autocomplete } from "@react-google-maps/api";
-import { Dispatch, Fragment, SetStateAction, useRef, useState } from "react";
+import { Dispatch, SetStateAction, useRef, useState } from "react";
 import { Location } from "../../model/location";
 import PlaceIcon from '@mui/icons-material/Place';
 import PeopleIcon from '@mui/icons-material/People';
-import { LocalizationProvider, DatePicker, DateRange, DateRangePicker } from '@mui/x-date-pickers-pro';
+import { LocalizationProvider, DateRange, DateRangePicker } from '@mui/x-date-pickers-pro';
 import { AdapterDayjs } from '@mui/x-date-pickers-pro/AdapterDayjs';
 import { Dayjs } from "dayjs";
 import { searchAccommodations } from "../../services/accommodationService";
 import { SearchRequest } from "../../requests/accommodation/SearchRequest";
+import { ToastContainer, toast } from 'react-toastify';
 
 const Search = (props: SearchProps) => {
     const googleMapsApiKey = 'AIzaSyDufN-mHd60fGbjME-hgXD5nV1-zvQ8GrU';
@@ -17,8 +18,10 @@ const Search = (props: SearchProps) => {
     const [date, setDate] = useState<DateRange<Dayjs>>([null, null]);
     const [numberOfGuests, setNumberOfGuests] = useState(1);
     const [disabledSearch, setDisabledSearch] = useState(true);
+    const [clickedSearch, setClickedSearch] = useState(false);
 
     const handlePlaceChanged = () => {
+        setClickedSearch(false);
         if (autocompleteRef.current !== null) {
             const place = autocompleteRef.current.getPlace();
             let street = '';
@@ -70,6 +73,7 @@ const Search = (props: SearchProps) => {
     };
 
     const search = async () => {
+        setClickedSearch(true);
         if(location && date[0] && date[1]){
             const request = {
                 locationRequest: location,
@@ -82,7 +86,7 @@ const Search = (props: SearchProps) => {
                 props.setSearchRequest(request);
                 props.setResults(response);
             } catch(error){
-                console.log(error);
+                toast.error(error as string);
             }
         }
     }
@@ -114,7 +118,7 @@ const Search = (props: SearchProps) => {
                     <DateRangePicker 
                         localeText={{ start: 'Check-in', end: 'Check-out' }} 
                         value={date}
-                        onChange={(value) => setDate(value)}
+                        onChange={(value) => {setClickedSearch(false); setDate(value)}}
                     />
                 </LocalizationProvider>
                 <TextField
@@ -126,6 +130,7 @@ const Search = (props: SearchProps) => {
                     value={numberOfGuests}
                     onChange={(event) => 
                         {
+                            setClickedSearch(false);
                             setNumberOfGuests(+event.target.value);
                             if(date !== null && location) {
                                 setDisabledSearch(false);
@@ -152,6 +157,8 @@ const Search = (props: SearchProps) => {
                     Search
                 </Button>
             </Box>
+            {props.results.length === 0 && clickedSearch && <Typography variant='h4' style={{marginTop: 50, textAlign: 'center'}}>No results</Typography>}
+            <ToastContainer/>
         </Box>
     );
 };
